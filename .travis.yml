@@ -16,3 +16,30 @@ matrix:
   allow_failures:
     - php: hhvm
   fast_finish: true
+language: python
+python:
+  - "3.4"
+  
+before_install:
+  - chmod +x -R src/ .
+install:
+  - pip install -r src/requirements.txt
+  - pip install pylint
+  - pip install setuptools-lint
+
+script: 
+- nosetests
+- find . -name \*.py | grep -v "^test_" | xargs pylint --errors-only --reports=n || true 
+- find . -name \*.py pylint --verbose || true 
+notifications:
+  email:
+    recipients:
+      - jakesyl@gmail.com
+      - alexparson1@gmail.com
+    on_success: [always|never|change] # default: change
+    on_failure: [always|never|change] # default: always
+  irc: "chat.freenode.net#jakesyliscool"
+
+#add some tests!
+# add later:  pylint --errors-only &&
+ 
